@@ -1,6 +1,5 @@
 package cheng.kamen_rider_mod_jei_linkage.recipe.kamen_rider_gotchard;
 
-import cheng.kamen_rider_mod_jei_linkage.KamenRiderModJeiLinkage;
 import cheng.kamen_rider_mod_jei_linkage.recipe.ModRecipeType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -17,6 +16,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
+
+import java.util.Arrays;
 
 public class GotchardHenshinCardJeiRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
@@ -36,7 +37,7 @@ public class GotchardHenshinCardJeiRecipe implements Recipe<SimpleContainer> {
     }
 
     public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        return pLevel.isClientSide() ? false : false;
+        return true;
     }
 
     public int getHenshinlevel(){
@@ -89,7 +90,6 @@ public class GotchardHenshinCardJeiRecipe implements Recipe<SimpleContainer> {
             String fromrname = GsonHelper.getAsString(pSerializedRecipe,"from","steamhopper");
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "output"));
             JsonArray ingredients = GsonHelper.getAsJsonArray(pSerializedRecipe, "ingredients");
-
             /*NonNullList<Ingredient> inputs = NonNullList.withSize(4, Ingredient.EMPTY);
             for(int i = 0; i < inputs.size(); ++i) {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
@@ -98,7 +98,8 @@ public class GotchardHenshinCardJeiRecipe implements Recipe<SimpleContainer> {
             NonNullList<Ingredient> inputs = NonNullList.create();
             for(int i = 0; i < ingredients.size(); ++i) {
                 if (i < 4) { // 只取前11个材料
-                    inputs.add(Ingredient.fromJson(ingredients.get(i)));
+                    Ingredient ingredient = Ingredient.fromJson(ingredients.get(i));
+                    inputs.add(ingredient);
                 }
             }
 
@@ -153,11 +154,9 @@ public class GotchardHenshinCardJeiRecipe implements Recipe<SimpleContainer> {
             return this.registryName;
         }
 
-        // 保留并修复 getRegistryType 方法 - 这是关键修复
-        @SuppressWarnings("unchecked")
         public Class<RecipeSerializer<?>> getRegistryType() {
             // 使用原始类型转换，但添加了抑制警告
-            return (Class<RecipeSerializer<?>>) (Class<?>) RecipeSerializer.class;
+            return ModRecipeType.GotchardSerializer.get().getRegistryType();
         }
     }
 }

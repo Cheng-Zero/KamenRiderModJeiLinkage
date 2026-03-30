@@ -138,11 +138,9 @@ public class FullbottlePurifierJeiRecipe implements Recipe<SimpleContainer> {
             return this.registryName;
         }
 
-        // 保留并修复 getRegistryType 方法 - 这是关键修复
-        @SuppressWarnings("unchecked")
         public Class<RecipeSerializer<?>> getRegistryType() {
             // 使用原始类型转换，但添加了抑制警告
-            return (Class<RecipeSerializer<?>>) (Class<?>) RecipeSerializer.class;
+            return ModRecipeType.FullbottlePurifierSerializer.get().getRegistryType();
         }
     }
 }

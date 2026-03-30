@@ -4,14 +4,17 @@ import cheng.kamen_rider_mod_jei_linkage.KamenRiderModJeiLinkage;
 import cheng.kamen_rider_mod_jei_linkage.recipe.ModRecipeType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.mcreator.kamenridergotchard.network.KamenRiderGotchardModVariables;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -152,10 +155,30 @@ public class AlchemistableJeiRecipe implements Recipe<SimpleContainer> {
         }
 
         // 保留并修复 getRegistryType 方法 - 这是关键修复
-        @SuppressWarnings("unchecked")
         public Class<RecipeSerializer<?>> getRegistryType() {
             // 使用原始类型转换，但添加了抑制警告
-            return (Class<RecipeSerializer<?>>) (Class<?>) RecipeSerializer.class;
+            return ModRecipeType.AlchemistableSerializer.get().getRegistryType();
         }
+    }
+
+    public void setLevel(Player player,int level){
+        LazyplayerVariables(player).ifPresent(d-> {
+            d.level = level;
+            d.syncPlayerVariables(player);
+        });
+    }
+
+    public double getExperinence(Player player){
+        return playerVariables(player).experinence;
+    }
+
+    public double getLevel(Player player){
+        return playerVariables(player).level;
+    }
+    private static KamenRiderGotchardModVariables.PlayerVariables playerVariables(Player player){
+        return LazyplayerVariables(player).orElse(new KamenRiderGotchardModVariables.PlayerVariables());
+    }
+    private static LazyOptional<KamenRiderGotchardModVariables.PlayerVariables> LazyplayerVariables(Player player){
+        return (player.getCapability(KamenRiderGotchardModVariables.PLAYER_VARIABLES_CAPABILITY,null));
     }
 }

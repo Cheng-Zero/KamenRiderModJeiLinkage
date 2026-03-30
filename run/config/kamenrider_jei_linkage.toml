@@ -1,0 +1,13 @@
+
+["Player Login Messages"]
+	#是否启用玩家进入时发出作者名称等消息(true为是,false为否)
+	"是否启用" = true
+
+["Gotchard Recipe"]
+	#是否启用歌查德变身的JEI界面的配方添加(界面依旧是原来的)
+	"是否启用" = false
+
+["JEI Gotchard Category"]
+	#是否启用歌查德变身的JEI界面的催化剂(配方左边的工作方块类似的)
+	"是否启用" = false
+
